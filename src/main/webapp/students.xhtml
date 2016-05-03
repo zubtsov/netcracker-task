@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Студенты</title>
+</h:head>
+<h:body onload="#{studentsView.updateStudents()}">
+
+    <h:form>
+
+        <p:dataTable id="studs" value="#{studentsView.students}"
+                     filteredValue="#{studentsView.filteredStudents}"
+                     var="st">
+
+            <f:facet name="header">Список студентов</f:facet>
+
+            <p:column headerText="Идентификатор"
+                      sortBy="#{st.id}"
+                      filterBy="#{st.id}"
+                      filterMatchMode="startsWith">
+
+                <p:commandLink value="#{st.id}" action="#{studentView.update()}">
+                    <f:param name="studId" value="#{st.id}"/>
+                </p:commandLink>
+
+            </p:column>
+
+            <p:column headerText="Имя"
+                      sortBy="#{st.name}"
+                      filterBy="#{st.name}"
+                      filterMatchMode="contains">
+
+                <h:outputText value="#{st.name}"/>
+
+            </p:column>
+
+            <p:column headerText="Группа"
+                      sortBy="#{st.group.id}"
+                      filterBy="#{st.group.id}"
+                      filterMatchMode="contains">
+
+                <h:outputText value="#{st.group.id}"/>
+
+            </p:column>
+
+            <p:column headerText="Дата зачисления"
+                      sortBy="#{st.enrollDate}"
+                      filterBy="#{st.enrollDate}"
+                      filterMatchMode="contains">
+
+                <p:outputLabel value="#{st.enrollDate}">
+                    <f:convertDateTime pattern="MM/dd/yyyy" type="date"/>
+                </p:outputLabel>
+
+            </p:column>
+
+            <p:column>
+
+                <p:commandLink value="Удалить" update="studs" action="#{studentsView.deleteStudent(st)}"/>
+
+            </p:column>
+
+            <f:facet name="footer">
+
+                <p:commandButton value="Добавить студента" action="#{studentView.update}"/>
+
+            </f:facet>
+
+        </p:dataTable>
+
+    </h:form>
+
+    <p:separator/>
+
+    <p:button href="index.xhtml" value="Домашняя страница"/>
+    <p:button href="groups.xhtml" value="Группы"/>
+
+</h:body>
+</html>

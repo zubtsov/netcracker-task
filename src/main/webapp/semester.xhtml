@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+
+<h:head>
+    <title>Семестр</title>
+</h:head>
+<h:body>
+
+    <h:form>
+
+        <p:panel>
+
+            <h:panelGrid columns="3" cellpadding="5">
+
+                <p:outputLabel for="begDate" value="Дата начала семестра"/>
+                <p:calendar id="begDate" value="#{semesterView.semester.begDate}"
+                    required="true"/>
+                <p:message for="begDate"/>
+
+                <p:outputLabel for="expDate" value="Дата конец семестра"/>
+                <p:calendar id="expDate" value="#{semesterView.semester.expDate}"
+                    required="true"/>
+                <p:message for="expDate"/>
+                <o:validateOrder components="begDate expDate"/>
+
+            </h:panelGrid>
+
+            <p:dataTable id="exams" var="exam" value="#{semesterView.semester.exams}">
+                <f:facet name="header">
+                    Список экзаменов
+                </f:facet>
+
+                <p:column headerText="Дата">
+                    <p:calendar id="date" value="#{exam.date}" required="true"
+                                maxdate="#{semesterView.semester.expDate}"
+                                mindate="#{semesterView.semester.begDate}"/>
+                    <p:message for="date"/>
+                </p:column>
+
+                <p:column headerText="Предмет">
+                    <p:selectOneMenu id="studGroup"
+                                     value="#{exam.disc}"
+                                     converter="#{semesterView}"
+                                     >
+                        <f:selectItems value="#{semesterView.semester.disciplines}"
+                                       var="dis"
+                                       itemValue="#{dis}"
+                                       itemLabel="#{dis.name}"/>
+                    </p:selectOneMenu>
+                    <p:message for="studGroup"/>
+                </p:column>
+
+                <p:column headerText="Оценка">
+                    <p:inputText id="mark" value="#{exam.mark}">
+                        <f:converter converterId="javax.faces.Integer"/>
+                    </p:inputText>
+                    <p:message for="mark"/>
+                </p:column>
+
+                <p:column>
+                    <p:commandLink value="Удалить" update="exams" action="#{semesterView.deleteExam(exam)}"/>
+                </p:column>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Добавить экзамен" update="exams" action="#{semesterView.addExam}"/>
+                </f:facet>
+            </p:dataTable>
+
+            <p:dataTable id="disciplines" var="disc" value="#{semesterView.semester.disciplines}">
+                <f:facet name="header">
+                    Список предметов
+                </f:facet>
+
+                <p:column headerText="Название">
+                    <p:inputText value="#{disc.name}" required="true"/>
+                </p:column>
+
+                <p:column headerText="Описание">
+                    <p:inputText value="#{disc.description}" required="true"/>
+                </p:column>
+
+                <p:column>
+                    <p:commandLink value="Удалить" update="disciplines" action="#{semesterView.deleteDiscipline(disc)}"/>
+                </p:column>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Добавить предмет" update="disciplines" action="#{semesterView.addDiscipline}"/>
+                </f:facet>
+            </p:dataTable>
+
+            <p:messages/>
+
+            <p:commandButton value="Сохранить" action="#{semesterView.saveSemester}" update="@form">
+                <f:param name="studId" value="#{param['studId']}"/>
+            </p:commandButton>
+
+        </p:panel>
+
+    </h:form>
+
+    <p:separator/>
+
+    <p:button value="Домашняя страница" href="index.xhtml"></p:button>
+
+    <h:form>
+        <p:commandButton value="Студент" action="student">
+            <f:param name="studId" value="#{param['studId']}"/>
+        </p:commandButton>
+    </h:form>
+
+    <p:button value="Студенты" href="students.xhtml"></p:button>
+
+    <p:button value="Группы" href="groups.xhtml"/>
+
+</h:body>
+</html>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Домашняя страница</title>
+</h:head>
+<h:body>
+
+    <h1>Главная страница</h1>
+
+    Неисправленные баги:
+    1. Если добавить нового студента, а затем сразу начать редактирование семестров, вылетает Transaction Error
+    2. При хитрых манипуляциях на странице семестра не обновляются выпадающие списки...
+    <br/>
+
+    <p:panel>
+            <p:button value="Группы" href="groups.xhtml"></p:button>
+            <p:button value="Студенты" href="students.xhtml"></p:button>
+    </p:panel>
+
+    <h:form>
+        Шаблон поиска по имени (HQL):
+        <p:inputText value="#{indexView.pattern}"/>
+        <p:commandButton value="Найти" action="#{indexView.updateStudentsList}" update="datalist"/>
+
+        <p:dataList id="datalist" value="#{indexView.students}" var="stud">
+            <f:facet name="header">
+                Студенты
+            </f:facet>
+
+            <p:commandLink value="#{stud.id}. #{stud.name}" action="#{studentView.update()}">
+                <f:param name="studId" value="#{stud.id}"/>
+            </p:commandLink>
+
+        </p:dataList>
+    </h:form>
+
+</h:body>
+</html>

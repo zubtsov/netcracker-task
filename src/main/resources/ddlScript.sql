@@ -1,0 +1,28 @@
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS groups;
+DROP SEQUENCE IF EXISTS stud_id_seq;
+DROP SEQUENCE IF EXISTS group_id_seq;
+
+CREATE SEQUENCE stud_id_seq INCREMENT BY 1
+MINVALUE 1 NO MAXVALUE
+START WITH 1 NO CYCLE;
+
+CREATE SEQUENCE group_id_seq INCREMENT BY 1
+MINVALUE 1 NO MAXVALUE
+START WITH 1 NO CYCLE;
+
+CREATE TABLE IF NOT EXISTS groups
+(
+  id INTEGER PRIMARY KEY DEFAULT nextval('group_id_seq'),
+  group_number INTEGER NOT NULL,
+  faculty CHARACTER(80) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS students
+(
+  id INTEGER PRIMARY KEY DEFAULT nextval('stud_id_seq'),
+  group_id INTEGER NOT NULL REFERENCES groups(id) DEFAULT currval('group_id_seq'),
+  stud_name CHARACTER(80) NOT NULL CHECK(CHAR_LENGTH(stud_name) >= 3),
+  enroll_date DATE NOT NULL CHECK(enroll_date <= CURRENT_DATE),
+  semesters CHARACTER(4000)
+);

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="student" type="student"/>
+
+  <xs:complexType name="student">
+    <xs:sequence>
+      <xs:element name="semesters" type="semester" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="semester">
+    <xs:sequence>
+      <xs:element name="begDate" type="xs:dateTime"/>
+      <xs:element name="disciplines" type="discipline" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="exam" type="exam" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="expDate" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="discipline">
+    <xs:sequence>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="exam">
+    <xs:sequence>
+      <xs:element name="date" type="xs:dateTime"/>
+      <xs:element name="discipline" type="discipline"/>
+      <xs:element name="mark" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+
